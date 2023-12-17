@@ -11,16 +11,6 @@ FROM $IMAGE:$TAG
 ARG USER=dev
 ENV USER=$USER
 
-ENV TERM=xterm-256color
-ENV HOSTNAME=polymerized
-ENV DEV_COLOR=35
-
-ENV DEFAULT_COLOR="\\[\\033[00m\\]"
-ENV USER_COLOR="\\[\\033[0;30m\\]"
-ENV PATH_COLOR="\\[\\033[0;30m\\]" 
-
-RUN bash -c "echo 'export PS1=\"\$USER_COLOR\\u\\[\\033[0;\${DEV_COLOR}m\\]@\\[\\033[0;\${DEV_COLOR}m\\]\$HOSTNAME\$DEFAULT_COLOR:\$PATH_COLOR\\w\$DEFAULT_COLOR$ \"' >> /home/dev/.bashrc"
-
 # = = = = = = = = = = = = = = = = = = = = =
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -63,6 +53,16 @@ RUN npm install tree-sitter-cli -y -g
 RUN useradd -rm -d /home/$USER -s /bin/bash -g root -G sudo -u 1001 $USER
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN touch /home/$USER/.sudo_as_admin_successful
+
+ENV TERM=xterm-256color
+ENV HOSTNAME=polymerized
+ENV DEV_COLOR=35
+
+ENV DEFAULT_COLOR="\\[\\033[00m\\]"
+ENV USER_COLOR="\\[\\033[0;30m\\]"
+ENV PATH_COLOR="\\[\\033[0;30m\\]" 
+
+RUN bash -c "echo 'export PS1=\"\$USER_COLOR\\u\\[\\033[0;\${DEV_COLOR}m\\]@\\[\\033[0;\${DEV_COLOR}m\\]\$HOSTNAME\$DEFAULT_COLOR:\$PATH_COLOR\\w\$DEFAULT_COLOR$ \"' >> /home/dev/.bashrc"
 
 # = = = = = = = = = = = = = = = = = = = = =
 
