@@ -9,4 +9,4 @@ function run {
     docker run --name "polymerized" --mount type=bind,source="$(pwd)",target=/home/dev/project --platform linux/amd64 -it --rm polymerized/$1
 }
 
-run "polymerized"
+run "python"
