@@ -1,0 +1,71 @@
+# syntax=docker/dockerfile:1
+ARG IMAGE=ubuntu
+ARG TAG=22.04
+
+# = = = = = = = = = = = = = = = = = = = = = 
+
+FROM $IMAGE:$TAG
+
+# = = = = = = = = = = = = = = = = = = = = = 
+
+ARG USER=dev
+ENV USER=$USER
+
+# = = = = = = = = = = = = = = = = = = = = =
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+        sudo git curl ca-certificates rsync gnupg make build-essential libssl-dev zlib1g-dev \
+        libbz2-dev libreadline-dev libsqlite3-dev wget llvm \
+        libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+RUN sudo mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+ENV NODE_MAJOR 20
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends nodejs
+
+# = = = = = = = = = = = = = = = = = = = = =
+
+RUN curl -fLo nvim-linux64.tar.gz https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
+RUN tar -xzf nvim-linux64.tar.gz \
+    && mv nvim-linux64/share/* /usr/local/share/ \
+    && mv nvim-linux64/bin/* /usr/local/bin/ \
+    && mv nvim-linux64/lib/* /usr/local/lib/ \
+    && rm -rf nvim-linux64*
+
+RUN update-alternatives --install /usr/bin/vi vi /usr/local/bin/nvim 60 \
+    && update-alternatives --config vi \
+    && update-alternatives --install /usr/bin/vim vim /usr/local/bin/nvim 60 \
+    && update-alternatives --config vim \
+    && update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim 60 \
+    && update-alternatives --config editor
+
+# = = = = = = = = = = = = = = = = = = = = = 
+
+RUN npm install tree-sitter-cli -y -g
+
+# = = = = = = = = = = = = = = = = = = = = = 
+
+RUN useradd -rm -d /home/$USER -s /bin/bash -g root -G sudo -u 1001 $USER
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN touch /home/$USER/.sudo_as_admin_successful
+
+# = = = = = = = = = = = = = = = = = = = = =
+
+USER $USER
+WORKDIR /home/$USER
+
+# = = = = = = = = = = = = = = = = = = = = =
+
+RUN mkdir -p /home/$USER/.config/nvim
+COPY polymer/ /home/$USER/.config/nvim
+RUN nvim --headless "+Lazy! sync" +qa
+
+# = = = = = = = = = = = = = = = = = = = = =
+
+RUN mkdir /home/$USER/project
+WORKDIR /home/$USER/project
