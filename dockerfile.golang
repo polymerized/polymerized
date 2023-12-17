@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1
 FROM polymerized
 # = = = = = = = = = = = = = = = = = = = = =
-# ENV HOSTNAME=polymerized
-# ENV DEV_COLOR=35
+ENV HOSTNAME=golang
+ENV DEV_COLOR=36
 # = = = = = = = = = = = = = = = = = = = = =
+
+RUN sudo apt-get -y install golang-go
 
 # = = = = = = = = = = = = = = = = = = = = =
 ENTRYPOINT ["/bin/bash"]

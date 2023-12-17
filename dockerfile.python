@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM polymerized
+# = = = = = = = = = = = = = = = = = = = = =
 ENV HOSTNAME=python
 ENV DEV_COLOR=34
 # = = = = = = = = = = = = = = = = = = = = =

@@ -11,9 +11,23 @@ target "default" {
     contexts = { polymerized = "target:base" }
 }
 
+target "golang" {
+    tags = [ "polymerized/golang:latest" ]
+    dockerfile = "dockerfile.golang"
+    platforms = [ "linux/amd64" ]
+    contexts = { polymerized = "target:base" }
+}
+
 target "python" {
     tags = [ "polymerized/python:latest" ]
     dockerfile = "dockerfile.python"
+    platforms = [ "linux/amd64" ]
+    contexts = { polymerized = "target:base" }
+}
+
+target "rust" {
+    tags = [ "polymerized/rust:latest" ]
+    dockerfile = "dockerfile.rust"
     platforms = [ "linux/amd64" ]
     contexts = { polymerized = "target:base" }
 }
