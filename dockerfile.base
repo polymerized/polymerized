@@ -59,8 +59,8 @@ ENV HOSTNAME=polymerized
 ENV DEV_COLOR=35
 
 ENV DEFAULT_COLOR="\\[\\033[00m\\]"
-ENV USER_COLOR="\\[\\033[0;30m\\]"
-ENV PATH_COLOR="\\[\\033[0;30m\\]" 
+ENV USER_COLOR="\\[\\033[0;90m\\]"
+ENV PATH_COLOR="\\[\\033[0;90m\\]" 
 
 RUN bash -c "echo 'export PS1=\"\$USER_COLOR\\u\\[\\033[0;\${DEV_COLOR}m\\]@\\[\\033[0;\${DEV_COLOR}m\\]\$HOSTNAME\$DEFAULT_COLOR:\$PATH_COLOR\\w\$DEFAULT_COLOR$ \"' >> /home/dev/.bashrc"
 
