@@ -4,16 +4,15 @@ FROM polymerized
 ENV HOSTNAME=python
 ENV DEV_COLOR=34
 # = = = = = = = = = = = = = = = = = = = = =
+ARG VERSION
 
 RUN curl https://pyenv.run | bash
 
 ENV PYENV_ROOT /home/$USER/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN pyenv install 3.10.12
-RUN pyenv install 3.9.17
-
-RUN pyenv global 3.10.12
+RUN pyenv install $VERSION
+RUN pyenv global $VERSION
 
 # = = = = = = = = = = = = = = = = = = = = =
 ENTRYPOINT ["/bin/bash"]
