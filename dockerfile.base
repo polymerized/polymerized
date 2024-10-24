@@ -79,3 +79,8 @@ RUN nvim --headless "+Lazy! sync" +qa
 
 RUN mkdir /home/$USER/project
 WORKDIR /home/$USER/project
+
+# = = = = = = = = = = = = = = = = = = = = =
+
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"

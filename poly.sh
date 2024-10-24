@@ -8,6 +8,8 @@ show_help() {
     echo "  python    - run a python environment"
     echo "  rust      - run a rust environment"
     echo "  golang    - run a golang environment"
+    echo "  gleam     - run a gleam environment"
+    echo "  zig       - run a zig environment"
     echo "  base      - run the base polymerized environment"
     echo "  version   - show tool version"
 }
@@ -27,7 +29,7 @@ run_docker() {
 }
 
 case "$1" in
-    python|rust|golang)
+    python|rust|golang|gleam|zig)
         check_docker
         run_docker "$1"
         ;;

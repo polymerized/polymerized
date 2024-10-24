@@ -4,6 +4,8 @@ group "all" {
         "python",
         "golang",
         "rust",
+        "gleam",
+        "zig"
     ]
 }
 
@@ -22,6 +24,13 @@ target "default" {
 
 // = = = = = = = = = = = = = =
 
+target "gleam" {
+    tags = [ "polymerized/gleam:latest" ]
+    dockerfile = "dist/dockerfile.gleam"
+    platforms = [ "linux/amd64" ]
+    contexts = { polymerized = "target:base" }
+}
+
 target "golang" {
     tags = [ "polymerized/golang:latest" ]
     dockerfile = "dist/dockerfile.golang"
@@ -32,6 +41,13 @@ target "golang" {
 target "rust" {
     tags = [ "polymerized/rust:latest" ]
     dockerfile = "dist/dockerfile.rust"
+    platforms = [ "linux/amd64" ]
+    contexts = { polymerized = "target:base" }
+}
+
+target "zig" {
+    tags = [ "polymerized/zig:latest" ]
+    dockerfile = "dist/dockerfile.zig"
     platforms = [ "linux/amd64" ]
     contexts = { polymerized = "target:base" }
 }
